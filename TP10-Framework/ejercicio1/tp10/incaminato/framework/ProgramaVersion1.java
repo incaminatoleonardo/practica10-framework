@@ -14,12 +14,12 @@ import java.util.Scanner;
  * interfaz accion - Cree un paquete de nombre frw.config y guarde el archivo allì.
  */
 
-public class Programa {
+public class ProgramaVersion1 {
 
 	List<Accion> accionesAMostrar;
 	private int indice;
 
-	public Programa(String pathConfig) {
+	public ProgramaVersion1(String pathConfig) {
 		if (pathConfig == null)
 			throw new RuntimeException("Necestias pasarme un path del archivo de configuracion");
 
@@ -55,9 +55,9 @@ public class Programa {
 
 		System.out.println();
 		System.out.print("Ingrese su opción: ");
-		Scanner reader = new Scanner(System.in); // aca ingresar un campo para ingresar texto
+		Scanner reader = new Scanner(System.in);
 
-		int entrada = obtenerEntrada(reader); // aca ingresar un campo para ingresar texto
+		int entrada = obtenerEntrada(reader);
 
 		verificarAccionValida(entrada);
 
@@ -84,13 +84,13 @@ public class Programa {
 																										// botones
 			indice = indice + 1;
 		}
-		System.out.println(indice + ". " + "Salir"); // aca ingresar boton de salir
+		System.out.println(indice + ". " + "Salir");
 		return indice;
 	}
 
 	private void verificarAccionValida(int entrada) {
 		if (!verificarEntrada(entrada)) {
-			System.out.println("Ingrese una accion valida"); // agregar mensaje de alerta
+			System.out.println("Ingrese una accion valida");
 			System.out.println();
 			this.ejecutar();
 		}
@@ -100,11 +100,11 @@ public class Programa {
 	private void verAccionSeleccionada(int entrada) {
 
 		if (entrada != this.indice) { // aca entra si no seleciona Salir
-			accionesAMostrar.get(entrada - 1).ejecutar(); // aca mostrar un cartel con lo solicitado
+			accionesAMostrar.get(entrada - 1).ejecutar();
 			System.out.println();
 			this.ejecutar();
 		} else { // preguntar como sacar este else
-			System.out.println("Gracias por utilizar nuestro programa"); // cartel de despedida
+			System.out.println("Gracias por utilizar nuestro programa");
 			System.exit(0);
 		}
 
