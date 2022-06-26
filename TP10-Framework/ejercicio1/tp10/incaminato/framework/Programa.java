@@ -1,25 +1,33 @@
 package tp10.incaminato.framework;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 
-/*
- * Framework de caja negra configurable via archivo de propiedades.
- * 
- * Implemente la interfaz Accion - Genere un archivo llamado config.properties
- * con lo siguiente: clase = paquete.clase #con su clase que implementa la
- * interfaz accion - Cree un paquete de nombre frw.config y guarde el archivo allì.
- */
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
-public class Programa {
+public class Programa extends JFrame {
+
+	private JPanel contentPanePrograma;
 
 	List<Accion> accionesAMostrar;
 	private int indice;
 
+	/**
+	 * Create the frame.
+	 */
 	public Programa(String pathConfig) {
+		setTitle("Programa Version 2");
+
 		if (pathConfig == null)
 			throw new RuntimeException("Necestias pasarme un path del archivo de configuracion");
 
@@ -45,78 +53,72 @@ public class Programa {
 		} catch (Exception e) {
 			throw new RuntimeException("No pude crear la instancia de Accion... ", e);
 		}
+
+		// Contruccion de Ventana
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPanePrograma = new JPanel();
+		contentPanePrograma.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPanePrograma);
+		contentPanePrograma.setLayout(null);
+
+		JLabel lblBienvenido = new JLabel("Bienvenido, estas son sus opciones:");
+		lblBienvenido.setForeground(Color.BLUE);
+		lblBienvenido.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblBienvenido.setBounds(10, 11, 409, 35);
+		contentPanePrograma.add(lblBienvenido);
+
 	}
 
 	public void ejecutar() {
 
-		System.out.println("Bienvenido, estas son sus opciones:"); // aca crear la pantalla principal
-		System.out.println();
+		this.setVisible(true);
+
 		this.indice = mostrarAcciones();
 
-		System.out.println();
-		System.out.print("Ingrese su opción: ");
-		Scanner reader = new Scanner(System.in); // aca ingresar un campo para ingresar texto
-
-		int entrada = obtenerEntrada(reader); // aca ingresar un campo para ingresar texto
-
-		verificarAccionValida(entrada);
-
-		verAccionSeleccionada(entrada);
-
-	}
-
-	private int obtenerEntrada(Scanner reader) {
-		int entrada = 0;
-		try {
-			entrada = reader.nextInt();
-			System.out.println();
-		} catch (Exception e) {
-			throw new RuntimeException("Ingrese un valor numerico", e);
-		}
-		return entrada;
 	}
 
 	private int mostrarAcciones() {
 		int indice = 1;
+		int posicionY = 57;
 		for (Accion accion : accionesAMostrar) {
-			System.out.println(indice + ". " + accion.nombreItemMenu() + accion.descripcionItemMenu()); // aca debo
-																										// agregar los
-																										// botones
+
+			JButton btnAccion = new JButton(accion.nombreItemMenu());
+			btnAccion.setBounds(20, posicionY, 153, 23);
+			contentPanePrograma.add(btnAccion);
+
+			// Acciones del boton
+			btnAccion.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					accion.ejecutar();
+
+				}
+			});
+
+			JLabel lblDescAccion = new JLabel(accion.descripcionItemMenu());
+			lblDescAccion.setBounds(194, posicionY, 225, 23);
+			contentPanePrograma.add(lblDescAccion);
+
 			indice = indice + 1;
+			posicionY = posicionY + 25;
 		}
-		System.out.println(indice + ". " + "Salir"); // aca ingresar boton de salir
+
+		JButton btnAccion = new JButton("Salir");
+		btnAccion.setBounds(20, posicionY, 153, 23);
+		contentPanePrograma.add(btnAccion);
+		btnAccion.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+
+			}
+		});
+
 		return indice;
-	}
-
-	private void verificarAccionValida(int entrada) {
-		if (!verificarEntrada(entrada)) {
-			System.out.println("Ingrese una accion valida"); // agregar mensaje de alerta
-			System.out.println();
-			this.ejecutar();
-		}
-
-	}
-
-	private void verAccionSeleccionada(int entrada) {
-
-		if (entrada != this.indice) { // aca entra si no seleciona Salir
-			accionesAMostrar.get(entrada - 1).ejecutar(); // aca mostrar un cartel con lo solicitado
-			System.out.println();
-			this.ejecutar();
-		} else { // preguntar como sacar este else
-			System.out.println("Gracias por utilizar nuestro programa"); // cartel de despedida
-			System.exit(0);
-		}
-
-	}
-
-	private boolean verificarEntrada(int entrada) {
-		if (entrada > 0 && entrada <= this.indice) {
-			return true;
-		}
-
-		return false;
-
 	}
 
 }

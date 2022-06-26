@@ -55,9 +55,9 @@ public class ProgramaVersion1 {
 
 		System.out.println();
 		System.out.print("Ingrese su opción: ");
-		Scanner reader = new Scanner(System.in);
+		Scanner reader = new Scanner(System.in); // aca ingresar un campo para ingresar texto
 
-		int entrada = obtenerEntrada(reader);
+		int entrada = obtenerEntrada(reader); // aca ingresar un campo para ingresar texto
 
 		verificarAccionValida(entrada);
 
@@ -84,13 +84,13 @@ public class ProgramaVersion1 {
 																										// botones
 			indice = indice + 1;
 		}
-		System.out.println(indice + ". " + "Salir");
+		System.out.println(indice + ". " + "Salir"); // aca ingresar boton de salir
 		return indice;
 	}
 
 	private void verificarAccionValida(int entrada) {
 		if (!verificarEntrada(entrada)) {
-			System.out.println("Ingrese una accion valida");
+			System.out.println("Ingrese una accion valida"); // agregar mensaje de alerta
 			System.out.println();
 			this.ejecutar();
 		}
@@ -100,11 +100,11 @@ public class ProgramaVersion1 {
 	private void verAccionSeleccionada(int entrada) {
 
 		if (entrada != this.indice) { // aca entra si no seleciona Salir
-			accionesAMostrar.get(entrada - 1).ejecutar();
+			accionesAMostrar.get(entrada - 1).ejecutar(); // aca mostrar un cartel con lo solicitado
 			System.out.println();
 			this.ejecutar();
 		} else { // preguntar como sacar este else
-			System.out.println("Gracias por utilizar nuestro programa");
+			System.out.println("Gracias por utilizar nuestro programa"); // cartel de despedida
 			System.exit(0);
 		}
 
